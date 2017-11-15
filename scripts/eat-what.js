@@ -5,6 +5,7 @@ const axios = require('axios');
   
 const foodList = [
   [{weight: 9, id: '面包'},
+   {weight: 10, id: '粥'},
   {weight: 1, id: '蛋糕'},
   {weight: 3, id: '荷包蛋'},
   {weight: 9, id: '饽饽'},
@@ -42,9 +43,8 @@ const foodList = [
   {weight: 10, id: '白粥'},
   {weight: 5, id: '甑糕'},
   {weight: 6, id: '水果沙拉'},
-  {weight: 10, id: '粥'},
   {weight: 8, id: '八宝粥'},
-    {weight: 10, id: '酱饼'}
+  {weight: 10, id: '酱饼'}
   ],
   [
   {weight: 10, id: '盖浇饭'}, 
@@ -85,7 +85,19 @@ const foodList = [
   ]
 ];
 
-
+function getFoodsText(){
+	var text="";
+	for(var i=0;i<foodList.length;i++){
+		for(var j=0;j<foodList[i].length;j++){
+			if(!text.match(new RegExp(foodList[i][j].id),"g")){
+				text+=foodList[i][j].id+",";
+			}else{
+				console.log(foodList[i][j].id);
+			}
+		}
+	}
+	return text.substring(0,text.length-1)+"。";
+}
 
 module.exports = function(robot) {
   robot.hear(/choiceFood(.*)/, function(res) {
@@ -113,8 +125,8 @@ module.exports = function(robot) {
 		}
   });
 
-  robot.hear(/名单/, function(res) {
-    res.send(JSON.stringify(foodList));
+  robot.hear(/菜单/, function(res) {
+    res.send(getFoodsText());
   });
 
 

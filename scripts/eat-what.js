@@ -1,35 +1,97 @@
 'use strict';
 
-const 钦点 = require('random-weighted-choice');
+const choiceFood = require('random-weighted-choice');
 const axios = require('axios');
-
-const 领导班子名单 = [
-  {weight: 10, id: '重庆小面'},
-  {weight: 20, id: '桂林米粉'},
-  {weight: 10, id: '煎饼果子'},
-  {weight: 5, id: '请点外卖'},
-  {weight: 5, id: '卤煮'},
-  {weight: 5, id: '重庆小面全国五十强'},
-  {weight: 3, id: '江西菜'},
-  {weight: 5, id: '请点外卖'},
-  {weight: 1, id: '铁锅焖面'}
+  
+const foodList = [
+  [{weight: 9, id: '面包'},
+  {weight: 1, id: '蛋糕'},
+  {weight: 3, id: '荷包蛋'},
+  {weight: 9, id: '饽饽'},
+  {weight: 1, id: '油条'},
+  {weight: 4, id: '馄饨'},
+  {weight: 8, id: '面条'},
+  {weight: 6, id: '小笼包'},
+  {weight: 10, id: '玉米粥'},
+  {weight: 10, id: '小米稀饭'},
+  {weight: 10, id: '包子'},
+  {weight: 10, id: '杂粮煎饼'},
+  {weight: 6, id: '煎蛋'},
+  {weight: 10, id: '水煎包'},
+  {weight: 6, id: '锅贴'},
+  {weight: 10, id: '酸奶'},
+  {weight: 10, id: '南瓜粥'},
+  {weight: 10, id: '玉米糊'},
+  {weight: 10, id: '煎饼'},
+  {weight: 7, id: '馒头'},
+  {weight: 8, id: '燕麦片'},
+  {weight: 3, id: '水煮蛋'},
+  {weight: 1, id: '米粉'},
+  {weight: 9, id: '豆浆'},
+  {weight: 9, id: '牛奶'},
+  {weight: 5, id: '花卷'},
+  {weight: 6, id: '豆腐脑'},
+  {weight: 10, id: '小米粥'},
+  {weight: 10, id: '黑米粥'},
+  {weight: 8, id: '鸡蛋饼'},
+  {weight: 7, id: '鸡蛋灌饼'},
+  {weight: 1, id: '汉堡包'},
+  {weight: 1, id: '披萨'},
+  {weight: 1, id: '三明治'},
+  {weight: 4, id: '蒸饺'},
+  {weight: 10, id: '白粥'},
+  {weight: 5, id: '甑糕'},
+  {weight: 6, id: '水果沙拉'},
+  {weight: 10, id: '粥'},
+  {weight: 8, id: '八宝粥'},
+    {weight: 10, id: '酱饼'}
+  ],
+  [
+  {weight: 10, id: '盖浇饭'}, 
+  {weight: 4, id: '砂锅'}, 
+  {weight: 4, id: '麻辣烫'}, 
+  {weight: 6, id: '炒面'}, 
+  {weight: 5, id: '快餐'}, 
+  {weight: 1, id: '泡面'}, 
+  {weight: 1, id: '自助餐'}, 
+  {weight: 3, id: '川菜'}, 
+  {weight: 3, id: '粤菜'}, 
+  {weight: 3, id: '湘菜'}, 
+  {weight: 6, id: '本帮菜'}, 
+  {weight: 7, id: '兰州拉面'}, 
+  {weight: 1, id: '沙县小吃'}, 
+  {weight: 3, id: '茶餐厅'}, 
+  {weight: 5, id: '扬州炒饭'}, 
+  {weight: 9, id: '农家菜'}, 
+  {weight: 1, id: '馄饨'}, 
+  {weight: 1, id: '桂林米粉'},
+  {weight: 1, id: '西餐'}, 
+  {weight: 1, id: '味千拉面'}, 
+  {weight: 9, id: '凉皮'}, 
+  {weight: 1, id: '夹馍'}, 
+  {weight: 4, id: '米线'}, 
+  {weight: 3, id: '酸辣粉'}, 
+  {weight: 10, id: '烩麻食'}, 
+  {weight: 6, id: '油泼面'}, 
+  {weight: 2, id: '过桥米线'}, 
+  {weight: 3, id: '剪刀面'}, 
+  {weight: 10,id: '刀削面'},
+  {weight: 1, id:'冒菜'},
+  {weight: 1,id:'火锅'},
+  ],[
+  {weight:10,id:'自己做'},
+  {weight:10,id:'粥'},
+  {weight:10,id:'水果'}
+  ]
 ];
 
+
+
 module.exports = function(robot) {
-  let poem = '苟利国家生死以岂因福祸避趋之';
-
-  robot.hear(/念.*诗/, function(res) {
-    res.send(poem);
-  });
-
-  robot.hear(/苟/, function(res) {
-    res.send('苟日新，日日新，又日新。');
-  });
-
-  robot.hear(/钦点(.*)/, function(res) {
+  robot.hear(/choiceFood(.*)/, function(res) {
     let president = res.match[1];
     if (!president) {
-      president = res.random(['唐纳德·特朗普']);
+      president = res.random(['hello world']);
     } else {
       president = res.random(president.split(','));
     }
@@ -39,100 +101,21 @@ module.exports = function(robot) {
   });
 
   robot.hear(/吃/, function(res) {
-    res.send(`**${钦点(领导班子名单)}**`);
+	  var date=new Date();
+	  var h=date.getHours();
+	  var arr=[];
+		if(parseInt(h)<10){
+			res.send(`**早餐：${choiceFood(foodList[0])}**`);
+		}else if(parseInt(h)>=10&&parseInt(h)<16){
+			res.send(`**午餐：${choiceFood(foodList[1])}**`);
+		}else{
+			res.send(`**晚餐：${choiceFood(foodList[2])}**`);
+		}
   });
 
   robot.hear(/名单/, function(res) {
-    res.send(JSON.stringify(领导班子名单));
+    res.send(JSON.stringify(foodList));
   });
 
-  robot.hear(/焖面/, function(res) {
-    res.send('不，王滨老师，我们不吃铁锅焖面');
-  });
 
-  robot.hear(/我[要|想]自杀/, function(res) {
-    res.send('可以，这很清真👌。\n你会开卡车吗？')
-  })
-
-  robot.hear('出来', function (res) {
-    res.send('嗷')
-  });
-
-  robot.hear('嘿', function (res) {
-    if (Math.random() > 0.1) {
-      res.send('咻')
-    } else {
-      res.send('Miss! :-1:')
-    }
-  });
-
-  var 行不行的算法 = function(res) {
-    if (Math.random() > 0.5) {
-      res.send('这不清真，阿拉胡阿克巴！');
-    } else {
-      res.send('可以，这很清真👌。');
-    }
-  }
-
-  robot.hear('行', 行不行的算法);
-
-  robot.hear('算法', function(res) {
-    res.send('行不行的算法是:\n' +
-      '```js\n' + 行不行的算法.toString() + '```'
-    );
-  });
-
-  const STATUS_TYPE = ['update', 'investigating', 'identified', 'monitoring', 'resolved'];
-  const helpMessage = `status [[${STATUS_TYPE.join('|')}] content | delete id | archive]`;
-  const headers = {
-    'X-Bmob-Application-Id': 'b1cf38d2395fc2bc11aaa803dd380059',
-    'X-Bmob-Master-Key': process.env.BMOB_MASTERKEY,
-  };
-
-  robot.hear(/status(.*)/, function(res) {
-    const result = (res.match[1] || '').trim().match(/(\S*)\s*(.*)/);
-    if (result) {
-      const [__, command, content] = result;
-      const type = STATUS_TYPE.indexOf(command);
-      const user = res.message.user.name;
-      console.log(command, content, type, user);
-      if (command === 'archive') {
-        return axios.get(`https://api.bmob.cn/1/classes/Status/?limit=8&where=${encodeURIComponent('{"archived":{"$ne":true}}')}`, {
-          headers
-        }).then(response => {
-          console.log(response.data.results.map(status => status.objectId));
-          return Promise.all(response.data.results.map(status =>
-            axios.put(`https://api.bmob.cn/1/classes/Status/${status.objectId}`, { archived: true }, {
-              headers
-            })
-          ));
-        }).then(
-          response => res.send(`${response.length} status archived`)
-        ).catch(error => {
-          console.error(error);
-          res.send(error.message);
-        })
-      }
-      if (command === 'delete') {
-        return axios.delete(`https://api.bmob.cn/1/classes/Status/${content}`, {
-          headers
-        }).then(
-          response => res.send(`${content} deleted`)
-        ).catch(error => {
-          console.error(error);
-          res.send(error.message);
-        })
-      }
-      if (type == -1) return res.send(helpMessage);
-      return axios.post('https://api.bmob.cn/1/classes/Status', {content, user, type}, {
-        headers
-      }).then(
-        response => res.send(response.data.objectId)
-      ).catch(error => {
-        console.error(error);
-        res.send(error.message);
-      })
-    }
-    return res.send(helpMessage);
-  });
 }
